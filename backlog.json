@@ -1,0 +1,231 @@
+{
+  "project": "SmartTaskly MVP",
+  "epics": [
+    {
+      "epic": "User Task Management",
+      "stories": [
+        {
+          "id": "1.1",
+          "title": "Create a task",
+          "description": "As a user, I want to create a task with a title, due date, and priority",
+          "acceptanceCriteria": "POST to API creates task in DynamoDB with correct schema"
+        },
+        {
+          "id": "1.2",
+          "title": "View all tasks",
+          "description": "As a user, I want to see a list of all my tasks",
+          "acceptanceCriteria": "GET from API returns user’s tasks ordered by created date"
+        },
+        {
+          "id": "1.3",
+          "title": "Mark task as complete",
+          "description": "As a user, I want to mark a task as complete",
+          "acceptanceCriteria": "PATCH API updates `status` field to `complete`"
+        },
+        {
+          "id": "1.4",
+          "title": "Delete a task (optional)",
+          "description": "As a user, I want to delete a task",
+          "acceptanceCriteria": "DELETE API removes task by taskId and userId"
+        },
+        {
+          "id": "1.5",
+          "title": "Task status management",
+          "description": "As a user, I want each task to have a status",
+          "acceptanceCriteria": "Tasks have `incomplete` or `complete` status by default"
+        }
+      ]
+    },
+    {
+      "epic": "Smart Suggestions",
+      "stories": [
+        {
+          "id": "2.1",
+          "title": "Suggested task of the day",
+          "description": "As a user, I want the system to suggest one task to focus on today",
+          "acceptanceCriteria": "App selects highest priority + soonest due task"
+        },
+        {
+          "id": "2.2",
+          "title": "Auto-update suggestion",
+          "description": "As a user, I want the suggestion to update in real-time as tasks change",
+          "acceptanceCriteria": "Suggested task updates when a task is marked complete"
+        },
+        {
+          "id": "2.3",
+          "title": "Visual suggestion UI",
+          "description": "As a user, I want to visually see the “Suggested Task” at the top of my list",
+          "acceptanceCriteria": "Suggested task is rendered with a banner or highlight"
+        }
+      ]
+    },
+    {
+      "epic": "UI/UX Foundation",
+      "stories": [
+        {
+          "id": "3.1",
+          "title": "Task list UI",
+          "description": "As a user, I want to view my tasks in a card/list UI",
+          "acceptanceCriteria": "All tasks are displayed with title, due date, priority"
+        },
+        {
+          "id": "3.2",
+          "title": "Add task form",
+          "description": "As a user, I want to add tasks via a simple form",
+          "acceptanceCriteria": "Form inputs map to `title`, `dueDate`, and `priority`"
+        },
+        {
+          "id": "3.3",
+          "title": "Complete task toggle",
+          "description": "As a user, I want to check off completed tasks visually",
+          "acceptanceCriteria": "Checkbox or button updates status to `complete`"
+        },
+        {
+          "id": "3.4",
+          "title": "Task feedback states",
+          "description": "As a user, I want feedback when I add or complete a task",
+          "acceptanceCriteria": "UI shows loading/spinner or toast messages"
+        },
+        {
+          "id": "3.5",
+          "title": "Responsive design",
+          "description": "As a user, I want a responsive design on desktop and mobile",
+          "acceptanceCriteria": "Tailwind layout works on all screen sizes"
+        }
+      ]
+    },
+    {
+      "epic": "AWS Backend Setup",
+      "stories": [
+        {
+          "id": "4.1",
+          "title": "Lambda functions for task ops",
+          "description": "As a developer, I want to create Lambda functions for each task operation",
+          "acceptanceCriteria": "Lambda functions: createTask, getTasks, updateTaskStatus"
+        },
+        {
+          "id": "4.2",
+          "title": "CloudWatch logging",
+          "description": "As a developer, I want the backend to log errors to CloudWatch",
+          "acceptanceCriteria": "All Lambda handlers log errors and results"
+        },
+        {
+          "id": "4.3",
+          "title": "Mock auth for MVP",
+          "description": "As a developer, I want to mock auth using a hardcoded userId",
+          "acceptanceCriteria": "All API calls assume a static `userId` for testing MVP"
+        },
+        {
+          "id": "4.4",
+          "title": "API Gateway setup",
+          "description": "As a developer, I want to deploy API Gateway endpoints",
+          "acceptanceCriteria": "REST API is public and returns valid JSON"
+        }
+      ]
+    },
+    {
+      "epic": "Vercel Frontend Integration",
+      "stories": [
+        {
+          "id": "5.1",
+          "title": "Frontend fetch integration",
+          "description": "As a developer, I want to fetch data from the AWS API in Next.js",
+          "acceptanceCriteria": "`fetch()` calls connect to API Gateway endpoints"
+        },
+        {
+          "id": "5.2",
+          "title": "Deploy frontend to Vercel",
+          "description": "As a developer, I want to deploy frontend to Vercel",
+          "acceptanceCriteria": "Project is live at a custom subdomain"
+        },
+        {
+          "id": "5.3",
+          "title": "Use Tailwind & UI Kit",
+          "description": "As a developer, I want to use Tailwind and a UI Kit for quick dev",
+          "acceptanceCriteria": "Tailwind is set up and shadcn/ui or Vercel kit is used"
+        },
+        {
+          "id": "5.4",
+          "title": "Preserve session state",
+          "description": "As a user, I want my session to persist while interacting with the app",
+          "acceptanceCriteria": "State is preserved during session with localStorage or memory"
+        }
+      ]
+    },
+    {
+      "epic": "Data Model & Persistence",
+      "stories": [
+        {
+          "id": "6.1",
+          "title": "DynamoDB schema with PK/SK",
+          "description": "As a developer, I want to store tasks in DynamoDB with userId and taskId as keys",
+          "acceptanceCriteria": "PK = `userId`, SK = `taskId`"
+        },
+        {
+          "id": "6.2",
+          "title": "Task attributes enforcement",
+          "description": "As a developer, I want to include priority, dueDate, and status fields",
+          "acceptanceCriteria": "Items follow the agreed schema"
+        },
+        {
+          "id": "6.3",
+          "title": "GSI for due date queries",
+          "description": "As a developer, I want to support sorting by due date for suggestions",
+          "acceptanceCriteria": "GSI on `dueDate` works for querying"
+        }
+      ]
+    },
+    {
+      "epic": "Deployment & DevOps",
+      "stories": [
+        {
+          "id": "7.1",
+          "title": "Deploy backend API to AWS",
+          "description": "As a developer, I want to deploy my API to AWS",
+          "acceptanceCriteria": "All endpoints are deployed and testable"
+        },
+        {
+          "id": "7.2",
+          "title": "CI/CD from GitHub to Vercel",
+          "description": "As a developer, I want CI/CD from GitHub to Vercel",
+          "acceptanceCriteria": "Push to main triggers frontend redeploy"
+        },
+        {
+          "id": "7.3",
+          "title": "Test Lambda endpoints",
+          "description": "As a developer, I want to test Lambda endpoints manually",
+          "acceptanceCriteria": "Test cases run using Postman or curl"
+        }
+      ]
+    },
+    {
+      "epic": "Future Enhancements (Stretch)",
+      "stories": [
+        {
+          "id": "8.1",
+          "title": "Authentication setup",
+          "description": "As a user, I want authentication so only I can access my tasks",
+          "acceptanceCriteria": "Add Cognito or Supabase auth later"
+        },
+        {
+          "id": "8.2",
+          "title": "Recurring tasks",
+          "description": "As a user, I want recurring tasks",
+          "acceptanceCriteria": "Task object supports repeat rules"
+        },
+        {
+          "id": "8.3",
+          "title": "Calendar integration",
+          "description": "As a user, I want calendar sync with Google/Outlook",
+          "acceptanceCriteria": "Calendar API integration"
+        },
+        {
+          "id": "8.4",
+          "title": "AI task assistant",
+          "description": "As a user, I want a chatbot to help plan my day",
+          "acceptanceCriteria": "AI assistant handles natural language input"
+        }
+      ]
+    }
+  ]
+}
