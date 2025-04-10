@@ -91,21 +91,42 @@ describe('fetchTasks', () => {
 
     const result = await fetchTasks();
 
+    expect(result.error).toBeDefined();
+    expect(result.error?.message).toContain('Failed to fetch tasks');
+    expect(result.error?.status).toBe(500);
     expect(result.tasks).toHaveLength(0);
-    expect(result.error).toContain('HTTP error');
+  });
+
+  it('should handle network error', async () => {
+    // Mock network failure
+    server.use(
+      http.get('https://mock-api.example.com/tasks', () => {
+        throw new Error('Failed to fetch');
+      })
+    );
+
+    const result = await fetchTasks();
+
+    expect(result.error).toBeDefined();
+    expect(result.error?.message).toContain('Failed to fetch tasks');
+    expect(result.tasks).toHaveLength(0);
   });
 
   it('should handle invalid response format', async () => {
-    // Mock server with invalid response
+    // Mock server with invalid response format
     server.use(
       http.get('https://mock-api.example.com/tasks', () => {
-        return HttpResponse.json({ invalidKey: 'Invalid Data' });
+        return HttpResponse.json({
+          // Missing 'tasks' array
+          message: 'Invalid data',
+        });
       })
     );
 
     const result = await fetchTasks();
 
     expect(result.tasks).toHaveLength(0);
-    expect(result.error).toContain('Invalid response format');
+    expect(result.error).toBeDefined();
+    expect(result.error?.message).toContain('Invalid response format');
   });
 });
