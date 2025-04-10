@@ -1,148 +1,84 @@
-🧠 PRD: Personalized Task Manager
-📌 Title
-SmartTaskly — A Personalized Task Manager That Optimizes Scheduling and Prioritization Using AI
+⚡️ MVP PRD: SmartTaskly (1-Hour Build Version)
+🚀 Mission
+Build a personalized task manager MVP in under an hour that lets users:
 
-🧭 1. Executive Summary
-SmartTaskly is a personalized task management platform that intelligently prioritizes and schedules tasks based on user habits, preferences, workload, energy levels, and deadlines. The product leverages AI to learn from user behavior and continuously improve task recommendations, scheduling, and reminders.
+Create & view tasks
 
-🎯 2. Problem Statement
-Most task management tools follow a rigid approach—users must manually prioritize tasks without considering context like personal routines, historical productivity patterns, or real-time constraints. This leads to burnout, missed deadlines, and reduced productivity.
+Assign due dates and priorities
 
-🌈 3. Product Vision
-To empower users with a task manager that feels like an intelligent assistant—one that understands how and when they work best, adapts in real-time, and helps them maintain momentum without overwhelm.
+Get a simple “today's suggested task” using a basic rule-based logic
 
-🧍‍♂️ 4. Target Users
-Remote workers & freelancers
+🛠 Tech Stack
+🔙 Backend (AWS)
+AWS Lambda + API Gateway: Task CRUD endpoints
 
-Students
+DynamoDB: Store user tasks (userId, taskId, title, dueDate, priority, status)
 
-Knowledge workers & creatives
+CloudWatch Logs: For quick debug/monitoring
 
-ADHD / neurodivergent individuals seeking structure
+Optional: Cognito or Magic Link (mock auth to save time)
 
-Busy professionals with overloaded calendars
+🖥 Frontend (Vercel + UI Kit)
+Next.js App Router (app dir)
 
-⚙️ 5. Core Features
-✅ Task Input & Management
-Add/edit/delete tasks
+Tailwind CSS + shadcn/ui (or Vercel’s Prebuilt UI templates)
 
-Assign due dates, urgency, effort level
+REST fetch to call AWS endpoints
 
-Set recurring tasks
+Quick-loading, mobile-friendly interface
 
-Tag with project or category
+🎯 Feature Scope (What You’ll Actually Build)
+1. 📝 Task Creation
+Input: Task name, priority (High/Med/Low), due date
 
-Attach files/links
+Call POST /api/tasks → AWS Lambda → DynamoDB
 
-🧠 Smart Prioritization Engine
-Prioritizes based on:
+2. 📋 Task List View
+Fetch tasks from GET /api/tasks
 
-Task urgency vs. importance
+Render cards with title, due date, priority
 
-Historical completion behavior (e.g. time of day productivity)
+3. 📅 “Suggested Task for Today”
+Simple logic: pick the task with the closest due date and highest priority
 
-Energy levels (manually set or inferred)
+Display one suggested task at the top
 
-Calendar availability
+4. ✅ Mark Complete
+PATCH /api/tasks/{id} → toggle status to “done”
 
-🗓️ Intelligent Scheduling
-Suggests optimal time slots in user’s calendar
+🧱 DynamoDB Schema
+json
+Copy
+Edit
+{
+  "userId": "abc123",
+  "taskId": "uuid",
+  "title": "Submit deck",
+  "dueDate": "2025-04-11",
+  "priority": "High",
+  "status": "incomplete"
+}
+⏱ 60-Minute Sprint Plan
+Time	Task
+0-10 min	Set up Next.js on Vercel + AWS credentials
+10-25 min	Build Lambda functions for CRUD
+25-40 min	Create basic UI with Tailwind & UI Kit
+40-50 min	Connect frontend to AWS endpoints
+50-60 min	Deploy, test flows, polish “Today’s Task”
+🧪 MVP Demo Goals
+Add 3 tasks
 
-Syncs with Google/Outlook Calendar
+View sorted list
 
-Detects overcommitment and suggests deferral or delegation
+See "Suggested Task"
 
-📊 Habit Learning & Insights
-Tracks patterns (e.g. best time to do deep work)
+Complete a task
 
-Weekly and monthly productivity insights
+🧠 Future (Post-MVP)
+User auth (Cognito)
 
-Personal “Focus Score” based on consistency and completion
+Habit learning logic
 
-🔔 Nudges & Notifications
-Smart reminders based on delay patterns
+AI-powered prioritization
 
-Energy-aware nudges: “Looks like you have low energy. Try a small task?”
-
-🌐 Cross-Platform Sync
-Mobile (iOS, Android) + Desktop (Web, Mac, Windows)
-
-Offline-first with local caching
-
-Real-time sync with all devices
-
-🧩 Optional AI Add-ons (V2)
-AI Assistant: Auto-prioritize and reschedule tasks
-
-Chat-style input: “Remind me to call John next week”
-
-Natural language task parsing
-
-🧱 6. Technical Requirements
-Backend
-FastAPI + PostgreSQL (Supabase) for speed, auth, and task storage
-
-Redis for caching reminders and notifications
-
-Celery for scheduled task execution (reminders, rescheduling)
-
-ChromaDB or Weaviate for embedding-based AI recommendation engine
-
-Frontend
-Next.js (TypeScript) for SPA with responsive design
-
-Tailwind CSS for styling
-
-PWA capabilities for mobile web
-
-AI / Personalization
-Embedding-based memory model for user habit recognition
-
-Fine-tuned transformer model for smart prioritization (e.g. DistilBERT or Mistral)
-
-Lightweight RAG (retrieval-augmented generation) for chatbot-style interaction
-
-📈 7. KPIs / Metrics of Success
-Daily/weekly active users (DAU/WAU)
-
-Task completion rate
-
-User retention after 30 days
-
-Engagement with smart features (e.g. auto-prioritization)
-
-Productivity improvement feedback (via user surveys)
-
-🔐 8. Privacy & Data Handling
-Local-only storage options for privacy-conscious users
-
-End-to-end encryption for task data
-
-Open-source AI logic for transparency (V2)
-
-🧪 9. Testing & QA Strategy
-TDD with Jest (frontend) and Pytest (backend)
-
-User acceptance testing with at least 25 beta testers
-
-Simulated workloads to test scheduling logic
-
-Accessibility & cross-browser tests
-
-🛣️ 10. Roadmap (First 12 Weeks)
-Week	Milestone
-1-2	Wireframes, task schema, and habit model design
-3-4	Basic task CRUD, calendar sync, and local scheduling
-5-6	Smart prioritization MVP + daily planner UI
-7-8	Habit learning engine & initial insights dashboard
-9-10	Notifications & nudge system
-11	Beta testing, feedback loop
-12	Launch 🚀
-🧩 11. Future Considerations (V2+)
-AI agent that proactively replans your week
-
-Voice input & wearable device sync (Apple Watch, Oura)
-
-Team collaboration mode
-
-API for integrations (Slack, Notion, Trello, etc.)
+Calendar integration
